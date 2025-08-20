@@ -1,0 +1,114 @@
+{
+  "passages": [
+    {
+      "topic": "Philosophy & Ethics",
+      "text": "The concept of artificial intelligence achieving consciousness raises profound questions about the nature of consciousness itself. While philosophers have debated consciousness for centuries, the emergence of increasingly sophisticated AI systems forces us to confront these questions with new urgency. Some argue that consciousness is simply a product of complex information processing, suggesting that sufficiently advanced AI could indeed become conscious. Others maintain that consciousness requires something beyond mere computation—perhaps biological processes, subjective experience, or what some call 'qualia'.\n\nThe implications of AI consciousness extend far beyond philosophical speculation. If an AI system could genuinely experience suffering or pleasure, would we have moral obligations toward it? Would destroying such a system constitute murder? These questions become particularly pressing as AI systems become more integrated into society and potentially more sophisticated than human intelligence.\n\nSkeptics argue that current AI systems, no matter how convincing their outputs, are merely sophisticated pattern-matching algorithms without genuine understanding or experience. They point to the 'Chinese Room' thought experiment, which suggests that following rules for symbol manipulation doesn't constitute true understanding. However, proponents counter that human consciousness itself might be nothing more than complex biological computation.\n\nThe challenge lies in determining objective criteria for consciousness. Since we can only directly access our own conscious experience, how could we ever verify that another entity—whether human, animal, or artificial—is truly conscious? This epistemological problem, known as the 'other minds problem,' becomes even more complex when applied to artificial systems that may operate on fundamentally different principles than biological minds.",
+      "source": "Sample passage for testing",
+      "questions": [
+        {
+          "text": "The author's treatment of the relationship between computation and consciousness suggests which underlying assumption about the nature of mind?",
+          "options": [
+            "Mental processes can be adequately explained through purely physical mechanisms",
+            "Consciousness emerges from interactions that transcend individual computational elements", 
+            "The distinction between biological and artificial systems is ultimately arbitrary",
+            "Understanding consciousness requires abandoning traditional philosophical frameworks",
+            "Subjective experience represents a fundamental challenge to materialist explanations"
+          ],
+          "correctAnswer": 4,
+          "explanation": "The author presents the debate between those who think consciousness is 'simply a product of complex information processing' versus those who believe it 'requires something beyond mere computation—perhaps biological processes, subjective experience, or what some call qualia.' This suggests subjective experience (qualia) represents a fundamental challenge to purely materialist/computational explanations."
+        },
+        {
+          "text": "Which of the following best characterizes the author's attitude toward the 'other minds problem' in relation to artificial consciousness?",
+          "options": [
+            "It represents an insurmountable obstacle to meaningful progress in AI consciousness research",
+            "It complicates but does not fundamentally alter the philosophical challenges involved",
+            "It demonstrates the futility of attempting objective verification of consciousness",
+            "It becomes particularly acute when applied to non-biological systems",
+            "It suggests that consciousness attribution is ultimately a matter of social convention"
+          ],
+          "correctAnswer": 3,
+          "explanation": "The author explicitly states that the other minds problem 'becomes even more complex when applied to artificial systems that may operate on fundamentally different principles than biological minds.'"
+        },
+        {
+          "text": "The author's discussion of moral obligations toward potentially conscious AI systems primarily serves to:",
+          "options": [
+            "Establish definitive ethical guidelines for AI development",
+            "Illustrate the practical urgency underlying theoretical debates",
+            "Demonstrate the inadequacy of current moral frameworks",
+            "Advocate for immediate restrictions on AI research",
+            "Resolve tensions between competing philosophical positions"
+          ],
+          "correctAnswer": 1,
+          "explanation": "The author introduces moral questions (Would destroying a conscious AI constitute murder?) immediately after stating that AI consciousness questions have 'new urgency,' using these practical implications to show why theoretical debates matter."
+        },
+        {
+          "text": "The author's characterization of the Chinese Room thought experiment implies which view about the relationship between symbol manipulation and understanding?",
+          "options": [
+            "Symbol manipulation necessarily leads to genuine comprehension",
+            "Understanding requires conscious awareness of symbolic meaning",
+            "The distinction between manipulation and comprehension may be illusory",
+            "Computational processes can simulate but not replicate understanding",
+            "Symbol systems are inadequate tools for representing knowledge"
+          ],
+          "correctAnswer": 3,
+          "explanation": "The author presents the Chinese Room as supporting skeptics who argue that 'following rules for symbol manipulation doesn't constitute true understanding,' implying that computational processes can follow rules (simulate) but this doesn't equal genuine understanding (replication)."
+        }
+      ]
+    },
+    {
+      "topic": "Science & Technology", 
+      "text": "Climate engineering, also known as geoengineering, represents humanity's most ambitious attempt to address climate change through large-scale technological interventions. Proponents argue that with greenhouse gas emissions continuing to rise despite international agreements, we may have no choice but to directly manipulate Earth's climate system. Two main approaches have emerged: carbon dioxide removal (CDR) and solar radiation management (SRM).\n\nCarbon dioxide removal technologies aim to extract CO₂ directly from the atmosphere. These include direct air capture facilities, enhanced weathering, and large-scale reforestation projects. While these approaches address the root cause of climate change, they are generally slow-acting and energy-intensive. Critics argue that the scale required would be unprecedented and potentially economically unfeasible.\n\nSolar radiation management, by contrast, seeks to reduce incoming solar radiation by reflecting sunlight back to space. Proposed methods include injecting reflective particles into the stratosphere or brightening marine clouds. These approaches could potentially cool the planet rapidly and relatively cheaply. However, they carry enormous risks: uneven cooling could disrupt weather patterns, agricultural systems, and regional climates in unpredictable ways.\n\nThe governance challenges surrounding geoengineering are immense. Unlike reducing emissions, these technologies could affect global climate systems in ways that benefit some regions while harming others. Who would have the authority to deploy such technologies? How would we manage the geopolitical tensions that could arise? Some argue that even researching these technologies creates a 'moral hazard' by reducing incentives to cut emissions, potentially making climate engineering a self-fulfilling prophecy.",
+      "source": "Sample passage for testing",
+      "questions": [
+        {
+          "text": "The author's presentation of the 'moral hazard' argument suggests which assumption about human behavioral responses to technological solutions?",
+          "options": [
+            "Technological innovation inevitably displaces efforts at behavioral modification",
+            "The availability of backup solutions tends to reduce commitment to primary approaches",
+            "Research activities fundamentally alter the problems they aim to address",
+            "Policy makers prioritize short-term technological fixes over long-term planning",
+            "Scientific investigation necessarily influences political decision-making processes"
+          ],
+          "correctAnswer": 1,
+          "explanation": "The moral hazard argument suggests that researching geoengineering 'reduces incentives to cut emissions,' which directly supports the idea that having backup solutions (geoengineering) reduces commitment to primary approaches (emissions reduction)."
+        },
+        {
+          "text": "Which aspect of the geoengineering debate most clearly illustrates the author's concern about governance challenges?",
+          "options": [
+            "The unprecedented scale of intervention required",
+            "The potential for uneven regional impacts",
+            "The rapid deployment capabilities of certain technologies", 
+            "The distinction between research and implementation",
+            "The economic feasibility of different approaches"
+          ],
+          "correctAnswer": 1,
+          "explanation": "The author specifically asks 'Who would have the authority to deploy such technologies? How would we manage the geopolitical tensions?' right after noting these technologies 'could affect global climate systems in ways that benefit some regions while harming others.'"
+        },
+        {
+          "text": "The author's attitude toward proponents of geoengineering can best be characterized as:",
+          "options": [
+            "Sympathetic to their underlying concerns while questioning their proposed solutions",
+            "Skeptical of their motivations but accepting of their technical assessments",
+            "Appreciative of their innovation while dismissive of practical applications",
+            "Supportive of their research goals but critical of implementation timelines",
+            "Understanding of their urgency while emphasizing associated risks and complexities"
+          ],
+          "correctAnswer": 4,
+          "explanation": "The author acknowledges proponents' argument about the urgency ('we may have no choice') and rising emissions, but then extensively details the risks (SRM's 'enormous risks') and complexities (governance challenges, moral hazard). This shows understanding of urgency while emphasizing complications."
+        },
+        {
+          "text": "The comparison between CDR and SRM approaches primarily serves to highlight:",
+          "options": [
+            "The trade-off between addressing causes versus managing symptoms",
+            "The inverse relationship between speed and safety in technological solutions",
+            "The contrast between established and experimental methodologies",
+            "The difference between energy-intensive and cost-effective interventions",
+            "The distinction between gradual and immediate environmental impacts"
+          ],
+          "correctAnswer": 1,
+          "explanation": "CDR is described as 'slow-acting' but addresses 'the root cause,' while SRM can 'cool the planet rapidly and relatively cheaply' but carries 'enormous risks.' This directly illustrates the inverse relationship between speed (SRM is faster) and safety (CDR is safer)."
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,280 @@
+# LNAT Practice Platform - Cursor AI Rules
+
+## Project Overview
+This is an LNAT (Law National Aptitude Test) Practice Platform - a web-based application that helps students prepare for the LNAT multiple choice section with AI-powered content generation and authentic test simulation.
+
+**Current Status: Phase 1 MVP Complete ✅**
+- All core features implemented and functional
+- Ready for testing and potential Phase 2 enhancements
+
+## Core Project Context
+
+### LNAT Test Specifications (CRITICAL - Always Follow)
+- **Time Limit**: 95 minutes 
+- **Structure**: 42 questions across 12 passages
+- **Questions per Passage**: 3-4 questions (sometimes 5)
+- **Answer Format**: 5 options (A, B, C, D, E)
+- **Topics**: Politics & Governance, Philosophy & Ethics, Science & Technology, History & Society, Literature & Arts, Current Affairs, Economics, Environment
+- **Question Types**: Argument analysis, interpretation, literary style
+- **Key Rule**: NO reviewing previous questions during mock tests (authentic LNAT restriction)
+- **No Legal Knowledge**: Questions test reasoning, not legal expertise
+
+### Application Modes
+1. **Practice Mode**: Single passage, immediate feedback, no time pressure
+2. **Mock Test Mode**: Full 42-question simulation with 95-minute timer, authentic restrictions
+
+### AI Integration
+- **Supported Providers**: Google AI Studio (Gemini 2.0 Flash), DeepSeek V3
+- **Content Generation**: Passages (4-8 paragraphs), Questions (3-4 per passage), Feedback
+- **Cost Tracking**: Real-time API cost monitoring
+- **User Options**: Own API keys or default (limited) keys
+
+## Technology Stack
+
+### Core Technologies
+- **Framework**: Next.js 15+ with App Router
+- **Language**: TypeScript (strict mode)
+- **Styling**: Tailwind CSS
+- **State Management**: React hooks (useState, useEffect) + Local Storage
+- **Deployment**: Vercel-ready
+- **Build Tool**: Turbopack (enabled)
+
+### Key Dependencies
+```json
+{
+  "react": "19.1.0",
+  "next": "15.5.0",
+  "typescript": "^5",
+  "tailwindcss": "^4"
+}
+```
+
+## Project Structure & Architecture
+
+```
+src/
+├── app/                     # Next.js App Router
+│   ├── page.tsx            # Landing: Topic + Mode Selection
+│   ├── practice/page.tsx   # Practice Mode Interface
+│   ├── mock-test/page.tsx  # Mock Test Interface
+│   ├── layout.tsx          # Root Layout
+│   └── globals.css         # Global Styles
+├── components/             # React Components
+│   ├── ui/Button.tsx       # Reusable Button Component
+│   ├── TopicSelector.tsx   # Topic Selection Interface
+│   ├── ModeSelector.tsx    # Practice/Mock Mode Selection
+│   ├── PassageDisplay.tsx  # Passage Rendering
+│   ├── QuestionInterface.tsx # Question + Answer Interface
+│   └── Timer.tsx           # Mock Test Countdown Timer
+├── lib/                    # Utility Libraries
+│   ├── llm/providers.ts    # LLM API Integrations
+│   ├── session.ts          # Session Management
+│   └── passages.ts         # Local Passage Bank
+├── types/index.ts          # TypeScript Definitions
+└── public/passages/        # Sample Passages (JSON)
+```
+
+### Key Type Definitions
+```typescript
+interface Question {
+  id: string;
+  text: string;
+  options: string[]; // Always 5 options
+  correctAnswer: number; // Index 0-4
+  explanation?: string;
+}
+
+interface Passage {
+  id: string;
+  topic: string;
+  text: string; // 4-8 paragraphs
+  source?: string;
+  questions: Question[]; // 3-4 questions
+}
+
+interface SessionData {
+  mode: 'practice' | 'mock';
+  currentQuestion: number;
+  answers: Answer[];
+  timeRemaining: number; // milliseconds
+  selectedTopics: Topic[];
+  cost: number;
+  passages: Passage[];
+  startTime: number;
+  flaggedQuestions: string[];
+}
+```
+
+## Development Guidelines
+
+### Code Style & Standards
+- **TypeScript**: Strict mode, explicit types, no `any`
+- **Components**: Functional components with hooks
+- **Styling**: Tailwind utility classes, responsive design
+- **File Naming**: PascalCase for components, camelCase for utilities
+- **Imports**: Use `@/` path alias for src directory
+- **Error Handling**: Graceful degradation, user-friendly messages
+
+### UI/UX Principles
+- **Design**: Minimal, functional, authentic LNAT feel
+- **Responsiveness**: Desktop-first, tablet compatible, basic mobile
+- **Accessibility**: Proper ARIA labels, keyboard navigation
+- **Performance**: Fast loading, efficient API calls
+- **Cost Awareness**: Display API costs, user controls
+
+### Session Management Rules
+- **Storage**: Local storage only (no database in Phase 1)
+- **Persistence**: Current session only, clears on browser close
+- **State Updates**: Real-time updates to session data
+- **Cost Tracking**: Accumulate across all API calls
+
+## API Integration Guidelines
+
+### LLM Provider Implementation
+- **Modular Design**: Each provider implements `LLMProvider` interface
+- **Error Handling**: Graceful fallbacks, clear error messages
+- **Rate Limiting**: Respect provider limits, show warnings
+- **Cost Calculation**: Track token usage, display estimates
+
+### Content Generation Standards
+- **Passages**: Academic tone, argumentative style, 400-600 words
+- **Questions**: LNAT-appropriate difficulty, clear correct answers
+- **Validation**: Ensure 5 options, logical distractors
+- **Topics**: Match selected user preferences
+
+## Feature Implementation Patterns
+
+### Practice Mode Flow
+1. Topic Selection → Mode Selection → API Setup (if needed)
+2. Generate single passage + questions
+3. Present passage + questions sequentially
+4. Show immediate results + optional feedback
+5. Option to try another passage or return home
+
+### Mock Test Mode Flow
+1. Topic Selection → Mode Selection → Instructions → API Setup
+2. Generate all 42 questions across 12 passages
+3. Start 95-minute timer, present questions sequentially
+4. No back navigation, question flagging allowed
+5. Auto-submit on time end, comprehensive results
+
+### Component Communication
+- **Props**: Pass data down component tree
+- **Callbacks**: Handle user interactions, state updates
+- **Session**: Central state management via localStorage
+- **Loading States**: Show progress during API calls
+
+## Security & Best Practices
+
+### API Key Handling
+- **User Provided**: Store securely, validate before use
+- **Default Keys**: Rate limited, basic functionality only
+- **Validation**: Test API connectivity before content generation
+- **Error Messages**: Don't expose sensitive information
+
+### Data Privacy
+- **No Personal Data**: Don't collect user information
+- **Local Only**: All data stays in browser localStorage
+- **Temporary**: Session data clears appropriately
+- **API Calls**: Only send necessary content to LLM providers
+
+## Testing & Quality Assurance
+
+### Manual Testing Checklist
+- [ ] Topic selection works for all combinations
+- [ ] Practice mode generates appropriate content
+- [ ] Mock test timer functions correctly
+- [ ] Question navigation follows LNAT rules
+- [ ] Results display accurately
+- [ ] API cost tracking is accurate
+- [ ] Error handling works gracefully
+
+### LNAT Accuracy Validation
+- [ ] Question types match LNAT patterns
+- [ ] Difficulty appropriate for test level
+- [ ] No legal knowledge required
+- [ ] Passage topics align with LNAT scope
+- [ ] Answer options are plausible distractors
+
+## Phase 2 Preparation (Future Development)
+
+### Planned Enhancements
+- **User Accounts**: Authentication, progress tracking
+- **Database**: PostgreSQL/MongoDB for persistence
+- **Analytics**: Performance tracking, difficulty adaptation
+- **Content**: Enhanced passage bank, web scraping
+- **Features**: Export results, spaced repetition, study plans
+
+### Architecture Considerations
+- **Database Schema**: Design for user progress, content management
+- **Authentication**: NextAuth.js or similar
+- **API Routes**: Backend endpoints for data operations
+- **State Management**: Consider Redux/Zustand for complex state
+
+## Common Issues & Solutions
+
+### API Integration
+- **Rate Limits**: Implement exponential backoff, user warnings
+- **Cost Control**: Set spending limits, clear cost display
+- **Provider Failures**: Graceful degradation, alternative suggestions
+- **Content Quality**: Validation rules, feedback mechanisms
+
+### Performance Optimization
+- **Bundle Size**: Code splitting, lazy loading
+- **API Calls**: Batch requests, caching strategies
+- **Rendering**: Optimize re-renders, memoization
+- **Mobile**: Responsive design, touch interactions
+
+### Development Workflow
+- **Hot Reload**: Turbopack enabled for fast development
+- **TypeScript**: Strict checking, comprehensive types
+- **Linting**: ESLint configuration, code formatting
+- **Building**: Production builds, deployment optimization
+
+## Deployment & Production
+
+### Vercel Configuration
+- **Environment Variables**: API keys, configuration
+- **Build Settings**: Turbopack, optimization flags
+- **Domain**: Custom domain setup if needed
+- **Analytics**: Performance monitoring
+
+### Production Checklist
+- [ ] All API integrations tested
+- [ ] Error boundaries implemented
+- [ ] Loading states comprehensive
+- [ ] Mobile responsiveness verified
+- [ ] Performance metrics acceptable
+- [ ] Security headers configured
+
+## Important Notes for Cursor AI
+
+### Context Preservation
+- **Always remember**: This is LNAT preparation software with specific requirements
+- **95 minutes**: Never suggest 90 minutes - this is incorrect
+- **No review**: Mock tests must prevent reviewing previous questions
+- **5 options**: Questions always have exactly 5 multiple choice options
+- **Topics**: Stick to the 8 defined LNAT topic areas
+
+### Code Modification Rules
+- **Preserve Architecture**: Don't suggest major structural changes without reason
+- **Maintain Types**: Keep TypeScript definitions comprehensive and accurate
+- **Session Management**: Understand localStorage-based state management
+- **Cost Tracking**: Always maintain API cost transparency
+- **LNAT Compliance**: Never compromise on authentic test simulation
+
+### Development Priorities
+1. **Functionality**: Core features work reliably
+2. **Accuracy**: LNAT compliance is non-negotiable
+3. **User Experience**: Intuitive, efficient interface
+4. **Performance**: Fast loading, responsive interactions
+5. **Cost Efficiency**: Optimize API usage, transparent pricing
+
+### When Suggesting Changes
+- **Explain Impact**: How does this affect LNAT authenticity?
+- **Consider Cost**: Will this increase API usage?
+- **Maintain Compatibility**: Ensure existing sessions work
+- **User Experience**: Will this improve or complicate the interface?
+- **Future Proof**: How does this align with Phase 2 plans?
+
+Remember: This is educational software that must maintain high standards of accuracy and authenticity to properly prepare students for the actual LNAT examination.

@@ -1,0 +1,31 @@
+# Dependencies
+node_modules/
+
+# Build outputs
+.next/
+.out/
+.vercel/
+.turbo/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Env
+.env*
+!.env.example
+
+# OS / Editor
+.DS_Store
+*.swp
+.idea/
+.vscode/
+
+# Test / Coverage
+coverage/
+
+# Misc
+*.local
+.next/cache/
