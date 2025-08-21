@@ -5,6 +5,11 @@ const EXTREME_LANGUAGE_PATTERNS = [
   /\b(must|should|will|cannot|can't|won't|definitely|certainly|obviously|clearly)\b/gi
 ];
 
+const STRONG_LANGUAGE_PATTERNS = [
+  /\b(universally|entirely|absolutely|completely|wholly|utterly|categorically)\b/gi,
+  /\b(without exception|in all cases|invariably|unquestionably|undoubtedly)\b/gi
+];
+
 const DIRECT_QUOTE_PATTERNS = [
   /according to the passage/gi,
   /the passage states/gi,
@@ -31,10 +36,17 @@ export function validateQuestionQuality(questions: Question[], passage: string):
     const metrics = analyzeQuestion(question, passage);
     let questionScore = 100;
     
-    // Check for extreme language
-    if (metrics.hasExtremeLanguage) {
-      issues.push(`Question ${index + 1}: Contains extreme language that makes wrong answers too obvious`);
-      questionScore -= 30;
+    // Check for problematic language patterns (updated logic)
+    const strongLanguageInCorrect = hasStrongLanguage(question.options[question.correctAnswer]);
+    const strongLanguageInIncorrect = question.options.filter((opt, i) => 
+      i !== question.correctAnswer && hasStrongLanguage(opt)
+    ).length;
+    
+    // Good: Strong language mixed between correct and incorrect
+    // Bad: Strong language only in incorrect answers
+    if (strongLanguageInIncorrect > 0 && !strongLanguageInCorrect) {
+      issues.push(`Question ${index + 1}: Strong language only in wrong answers makes them obviously incorrect`);
+      questionScore -= 25;
     }
     
     // Check for direct quotes
@@ -43,10 +55,13 @@ export function validateQuestionQuality(questions: Question[], passage: string):
       questionScore -= 25;
     }
     
-    // Check for obvious wrong answers
-    if (metrics.hasObviousWrongAnswers) {
-      issues.push(`Question ${index + 1}: Has obviously wrong answers with extreme language`);
-      questionScore -= 35;
+    // Check for proper assumption testing
+    if (question.text.toLowerCase().includes('assumes') || question.text.toLowerCase().includes('assumption')) {
+      const assumptionQuality = validateAssumptionQuestion(question, passage);
+      if (!assumptionQuality) {
+        issues.push(`Question ${index + 1}: Tests stated facts rather than unstated logical assumptions`);
+        questionScore -= 30;
+      }
     }
     
     // Check if requires inference
@@ -76,6 +91,27 @@ export function validateQuestionQuality(questions: Question[], passage: string):
     issues,
     score: Math.round(averageScore)
   };
+}
+
+function hasStrongLanguage(text: string): boolean {
+  return STRONG_LANGUAGE_PATTERNS.some(pattern => pattern.test(text));
+}
+
+function validateAssumptionQuestion(question: Question, passage: string): boolean {
+  // Check if options reference things explicitly stated in passage
+  const passageLower = passage.toLowerCase();
+  
+  return question.options.some(option => {
+    // Good assumption questions test unstated logical foundations
+    // Bad assumption questions test facts mentioned in passage
+    const optionWords = option.toLowerCase().split(/\s+/);
+    const mentionedInPassage = optionWords.some(word => 
+      word.length > 4 && passageLower.includes(word)
+    );
+    
+    // If correct answer is explicitly mentioned, it's probably not testing assumptions
+    return !mentionedInPassage;
+  });
 }
 
 export function analyzeQuestion(question: Question, _passage: string): QuestionQualityMetrics {

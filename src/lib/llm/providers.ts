@@ -1,5 +1,6 @@
 import { LLMProvider, Question } from '@/types';
 import { validateQuestionQuality, enforceQuestionTypeDistribution } from '../questionValidator';
+import { getSamplesByTopic, getRandomSample } from '../samplePassages';
 
 class GoogleAIProvider implements LLMProvider {
   name = 'Google AI Studio';
@@ -11,20 +12,34 @@ class GoogleAIProvider implements LLMProvider {
   }
 
   async generatePassage(topic: string, samples?: string[]): Promise<string> {
-    const prompt = `Generate a 4-8 paragraph argumentative passage suitable for LNAT practice on the topic: ${topic}.
+    const prompt = `Generate a controversial, unconventional argumentative passage for LNAT practice on: ${topic}
 
-The passage should:
-- Be academic and argumentative in style
-- Present complex ideas and arguments
-- Be approximately 400-600 words
-- Include multiple perspectives or counterarguments
-- Be challenging but accessible to undergraduate level readers
-- NOT require specific legal knowledge
-- Focus on reasoning, analysis, and critical thinking
+REQUIREMENTS FOR AUTHENTICITY:
+1. CONTROVERSIAL VIEWPOINTS: Present genuinely challenging perspectives, not mainstream views
+   - Example topics: "Children should grow up in wilderness without formal education"
+   - "Democracy is fundamentally flawed and should be abandoned"
+   - "All art should serve political purposes"
 
-${samples ? `Reference style from these samples:\n${samples.join('\n\n---\n\n')}` : ''}
+2. VARIED STYLES: Use these formats (choose one):
+   - Newspaper opinion column with strong editorial stance
+   - Personal letter with emotional, subjective arguments
+   - Academic piece with subtle logical flaws
+   - Manifesto-style writing with passionate conviction
 
-Generate only the passage text, no additional formatting or labels.`;
+3. LOGICAL COMPLEXITIES:
+   - Include subtle logical gaps or questionable assumptions
+   - Present counterarguments that seem reasonable but have flaws
+   - Use sophisticated but potentially problematic reasoning
+
+4. DIFFICULTY MARKERS:
+   - 500-700 words with dense, complex argumentation
+   - Requires multiple readings to fully comprehend
+   - Contains implicit assumptions not explicitly stated
+   - Mixes valid and questionable logical steps
+
+${samples && samples.length > 0 ? `Reference these authentic styles:\n${samples.join('\n\n---\n\n')}` : `Reference these authentic LNAT styles:\n${getRandomSample()}`}
+
+Generate ONLY the passage text with no labels or formatting.`;
 
     try {
       const response = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-exp:generateContent?key=' + this.apiKey, {
@@ -61,35 +76,57 @@ Generate only the passage text, no additional formatting or labels.`;
   }
 
   async generateQuestions(passage: string): Promise<Question[]> {
-    const prompt = `Based on this LNAT passage, generate exactly 4 multiple choice questions that match authentic LNAT difficulty and style.
+    const prompt = `Generate exactly 4 LNAT-style questions. Study this authentic LNAT example first:
 
-Passage:
+AUTHENTIC LNAT EXAMPLE:
+PASSAGE: "Medieval peasants were tied to manorial land. The Black Death killed 50% of the population, creating labor shortages. This allowed surviving peasants to demand higher wages and move between manors, breaking down feudalism. However, some argue the Great Famine had already started population reduction before the Black Death, making the plague merely an accelerator rather than the primary cause."
+
+QUESTION: "Which of the following is a necessary assumption about the Great Famine?"
+A) It reduced the population  
+B) It had an impact on wages
+C) It occurred before the Black Death ✓ 
+D) It was more severe than the Black Death
+E) It was a bigger cause of the shift in power
+
+CORRECT: C - This assumption is NECESSARY for the author's temporal argument to work.
+
+NOW GENERATE FOR THIS PASSAGE:
 ${passage}
 
-CRITICAL INSTRUCTIONS FOR LNAT QUESTION GENERATION:
+CRITICAL REQUIREMENTS:
 
-1. ANSWER OPTIONS: All 5 options must be equally plausible. NO extreme language ("always," "never," "completely," "all," "none"). Use subtle distinctions and nuanced wording.
+1. ANSWER LANGUAGE MIXING:
+   - Use "absolutely," "entirely," "universally" for CORRECT answers sometimes
+   - Use moderate language for INCORRECT answers sometimes  
+   - Break the pattern where strong language = wrong
+   - Example: Correct answer "X is universally true" vs Wrong answer "X might be somewhat relevant"
 
-2. DIFFICULTY: Questions must require inference and analysis. Students cannot answer by simple reading. Test implicit understanding only - no direct quotes or explicit restatements.
+2. ASSUMPTION QUESTIONS:
+   - Test unstated logical foundations the argument DEPENDS ON
+   - NOT facts mentioned in passage
+   - Must identify what the author takes for granted
+   - Example: "The argument assumes that..." where the assumption isn't explicitly stated
 
-3. QUESTION TYPES: Use these authentic LNAT patterns (one question from each category):
-   - "The author's attitude toward X can best be characterized as..."
-   - "The argument assumes which of the following?"
-   - "The author's primary method of argument is to..."
-   - "The passage suggests that X is most likely..."
+3. MAXIMUM DIFFICULTY:
+   - Require synthesis across entire passage
+   - No elimination by obvious language patterns
+   - Test logical reasoning, not reading comprehension
+   - All options must seem plausible to someone who read casually
 
-4. AVOID: Direct quotes, explicit restatements, obvious wrong answers, simple comprehension.
-
-5. PASSAGE INTEGRATION: Questions must require understanding across multiple paragraphs, not single sentences.
+4. REQUIRED QUESTION TYPES (one each):
+   - Author's implicit attitude/perspective
+   - Necessary unstated assumption  
+   - Logical flaw or weakness in reasoning
+   - Complex inference requiring analysis
 
 Format as JSON:
 {
   "questions": [
     {
-      "text": "Question text here",
+      "text": "Question text here", 
       "options": ["A option", "B option", "C option", "D option", "E option"],
       "correctAnswer": 0,
-      "explanation": "Brief explanation of correct answer"
+      "explanation": "Brief explanation"
     }
   ]
 }`;
@@ -214,20 +251,34 @@ class DeepSeekProvider implements LLMProvider {
   }
 
   async generatePassage(topic: string, samples?: string[]): Promise<string> {
-    const prompt = `Generate a 4-8 paragraph argumentative passage suitable for LNAT practice on the topic: ${topic}.
+    const prompt = `Generate a controversial, unconventional argumentative passage for LNAT practice on: ${topic}
 
-The passage should:
-- Be academic and argumentative in style
-- Present complex ideas and arguments
-- Be approximately 400-600 words
-- Include multiple perspectives or counterarguments
-- Be challenging but accessible to undergraduate level readers
-- NOT require specific legal knowledge
-- Focus on reasoning, analysis, and critical thinking
+REQUIREMENTS FOR AUTHENTICITY:
+1. CONTROVERSIAL VIEWPOINTS: Present genuinely challenging perspectives, not mainstream views
+   - Example topics: "Children should grow up in wilderness without formal education"
+   - "Democracy is fundamentally flawed and should be abandoned"
+   - "All art should serve political purposes"
 
-${samples ? `Reference style from these samples:\n${samples.join('\n\n---\n\n')}` : ''}
+2. VARIED STYLES: Use these formats (choose one):
+   - Newspaper opinion column with strong editorial stance
+   - Personal letter with emotional, subjective arguments
+   - Academic piece with subtle logical flaws
+   - Manifesto-style writing with passionate conviction
 
-Generate only the passage text, no additional formatting or labels.`;
+3. LOGICAL COMPLEXITIES:
+   - Include subtle logical gaps or questionable assumptions
+   - Present counterarguments that seem reasonable but have flaws
+   - Use sophisticated but potentially problematic reasoning
+
+4. DIFFICULTY MARKERS:
+   - 500-700 words with dense, complex argumentation
+   - Requires multiple readings to fully comprehend
+   - Contains implicit assumptions not explicitly stated
+   - Mixes valid and questionable logical steps
+
+${samples && samples.length > 0 ? `Reference these authentic styles:\n${samples.join('\n\n---\n\n')}` : `Reference these authentic LNAT styles:\n${getRandomSample()}`}
+
+Generate ONLY the passage text with no labels or formatting.`;
 
     try {
       const response = await fetch('https://api.deepseek.com/v1/chat/completions', {
@@ -266,35 +317,57 @@ Generate only the passage text, no additional formatting or labels.`;
   }
 
   async generateQuestions(passage: string): Promise<Question[]> {
-    const prompt = `Based on this LNAT passage, generate exactly 4 multiple choice questions that match authentic LNAT difficulty and style.
+    const prompt = `Generate exactly 4 LNAT-style questions. Study this authentic LNAT example first:
 
-Passage:
+AUTHENTIC LNAT EXAMPLE:
+PASSAGE: "Medieval peasants were tied to manorial land. The Black Death killed 50% of the population, creating labor shortages. This allowed surviving peasants to demand higher wages and move between manors, breaking down feudalism. However, some argue the Great Famine had already started population reduction before the Black Death, making the plague merely an accelerator rather than the primary cause."
+
+QUESTION: "Which of the following is a necessary assumption about the Great Famine?"
+A) It reduced the population  
+B) It had an impact on wages
+C) It occurred before the Black Death ✓ 
+D) It was more severe than the Black Death
+E) It was a bigger cause of the shift in power
+
+CORRECT: C - This assumption is NECESSARY for the author's temporal argument to work.
+
+NOW GENERATE FOR THIS PASSAGE:
 ${passage}
 
-CRITICAL INSTRUCTIONS FOR LNAT QUESTION GENERATION:
+CRITICAL REQUIREMENTS:
 
-1. ANSWER OPTIONS: All 5 options must be equally plausible. NO extreme language ("always," "never," "completely," "all," "none"). Use subtle distinctions and nuanced wording.
+1. ANSWER LANGUAGE MIXING:
+   - Use "absolutely," "entirely," "universally" for CORRECT answers sometimes
+   - Use moderate language for INCORRECT answers sometimes  
+   - Break the pattern where strong language = wrong
+   - Example: Correct answer "X is universally true" vs Wrong answer "X might be somewhat relevant"
 
-2. DIFFICULTY: Questions must require inference and analysis. Students cannot answer by simple reading. Test implicit understanding only - no direct quotes or explicit restatements.
+2. ASSUMPTION QUESTIONS:
+   - Test unstated logical foundations the argument DEPENDS ON
+   - NOT facts mentioned in passage
+   - Must identify what the author takes for granted
+   - Example: "The argument assumes that..." where the assumption isn't explicitly stated
 
-3. QUESTION TYPES: Use these authentic LNAT patterns (one question from each category):
-   - "The author's attitude toward X can best be characterized as..."
-   - "The argument assumes which of the following?"
-   - "The author's primary method of argument is to..."
-   - "The passage suggests that X is most likely..."
+3. MAXIMUM DIFFICULTY:
+   - Require synthesis across entire passage
+   - No elimination by obvious language patterns
+   - Test logical reasoning, not reading comprehension
+   - All options must seem plausible to someone who read casually
 
-4. AVOID: Direct quotes, explicit restatements, obvious wrong answers, simple comprehension.
-
-5. PASSAGE INTEGRATION: Questions must require understanding across multiple paragraphs, not single sentences.
+4. REQUIRED QUESTION TYPES (one each):
+   - Author's implicit attitude/perspective
+   - Necessary unstated assumption  
+   - Logical flaw or weakness in reasoning
+   - Complex inference requiring analysis
 
 Format as JSON:
 {
   "questions": [
     {
-      "text": "Question text here",
+      "text": "Question text here", 
       "options": ["A option", "B option", "C option", "D option", "E option"],
       "correctAnswer": 0,
-      "explanation": "Brief explanation of correct answer"
+      "explanation": "Brief explanation"
     }
   ]
 }`;
